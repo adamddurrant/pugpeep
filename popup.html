@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Pugpeep Debugger</title>
+  <link rel="stylesheet" href="styles/style.css">
+</head>
+
+<body>
+  <div id="root">
+
+    <div class="header">
+      <h1><img class="bolt" src="/icons/bolt-icon.png" />Pugpeep Debugger</h1>
+    </div>
+
+    <main>
+
+      <div class="url">
+        <p id="current-url"></p>
+      </div>  
+
+      <div class="controls">
+        <a href="javascript:void(0);" class="control-buttons" id="refresh">Refresh <img class="refresh-icon" src="/icons/refresh.png"/></a>
+        <a href="javascript:void(0);" class="control-buttons" id="view-source">View source <img class="source-icon" src="/icons/source-icon.png"></a>
+      </div>
+
+      <div class="container">
+
+        <div class="closed">
+          <figure><img class="icon" src="/icons/timeline-icon.png" /></figure>
+          <div class="details">
+            <h2>Bolt Timeline</h2>
+            <p id="timelineStatus" class="status">Not present</p>
+            <p id="timelineVersion">Loading...</p>
+          </div>
+          <figure><img class="chevron" src="/icons/chevron.png" /></figure>
+        </div>
+
+        <div class="open">Helpful stuff could live here</div>
+
+      </div>
+
+      <div class="container">
+
+        <div class="closed">
+          <figure><img class="icon" src="/icons/reader-icon.png" /></figure>
+          <div class="details">
+            <h2>Bolt Reader</h2>
+            <p id="readerStatus" class="status">Not present</p>
+            <p id="readerVersion">Loading...</p>
+          </div>
+          <figure><img class="chevron" src="/icons/chevron.png" /></figure>
+        </div>
+
+        <div class="open">Helpful stuff could live here</div>
+
+      </div>
+
+      <div class="container">
+
+        <div class="closed">
+          <figure><img class="icon" src="/icons/widgets-icon.png" /></figure>
+          <div class="details">
+            <h2>Bolt Widgets</h2>
+            <p id="widgetsStatus" class="status">Not present</p>
+            <p id="widgetsVersion">Loading...</p>
+          </div>
+          <figure><img class="chevron" src="/icons/chevron.png" /></figure>
+        </div>
+
+        <div class="open">Helpful stuff could live here</div>
+
+      </div>
+
+      <div class="container">
+
+        <div class="closed">
+          <figure><img class="icon" src="/icons/search-icon.png" /></figure>
+          <div class="details">
+            <h2>Bolt Search</h2>
+            <p id="searchStatus" class="status">Not present</p>
+            <p id="searchVersion">Loading...</p>
+          </div>
+          <figure><img class="chevron" src="/icons/chevron.png" /></figure>
+        </div>
+
+        <div class="open">Helpful stuff could live here</div>
+
+      </div>
+
+    </main>
+
+  </div>
+
+  <script src="popup.js"></script>
+
+</body>
+
+</html>
