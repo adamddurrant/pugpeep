@@ -4,8 +4,6 @@ style.rel = 'stylesheet';
 style.href = chrome.runtime.getURL('styles/overlay.css');
 document.head.appendChild(style);
 
-console.log('Content script started');
-
 // Create overlay container
 const overlay = document.createElement('div');
 overlay.id = 'pugpeep-overlay';
@@ -59,7 +57,7 @@ function setupNetworkMonitor() {
     for (const entry of list.getEntries()) {
       if (entry.name.endsWith('/pugpig_atom_contents.json') || entry.name.endsWith('/pugpig_atom_contents-preview.json')) {
         atomContentsUrl = entry.name;
-        console.log('Found atom contents JSON:', atomContentsUrl);
+
         // Update the overlay if it's visible
         if (overlay.style.transform === 'translateY(0)') {
           updateOverlayContent();
@@ -150,10 +148,8 @@ async function getVersionData() {
       if (cssCheck.found) {
         result.timelineCss = 'Found';
         result.timelineCssUrl = cssCheck.url;
-        console.log('Found custom-timeline.css:', cssCheck.url);
       } else {
         result.timelineCss = 'Not found';
-        console.log('custom-timeline.css not found in iframe head after retries');
       }
 
       // Check for timeline grid and style version
@@ -182,7 +178,7 @@ async function getVersionData() {
       console.error('Error accessing iframe content:', error);
     }
   } else {
-    console.log('Iframe not ready yet');
+    console.error('Iframe not ready yet');
   }
 
   // Add atom contents status
@@ -275,14 +271,11 @@ function setupIframeListener() {
 
 // Function to handle iframe load
 function handleIframeLoad() {
-  console.log('Iframe load event fired');
   // Give a small delay to ensure content is fully loaded
   setTimeout(() => {
     if (isIframeReady(this)) {
-      console.log('Iframe content verified ready');
       updateOverlayContent();
     } else {
-      console.log('Iframe content not ready yet, will retry');
       // If not ready, try again after a short delay
       setTimeout(() => {
         if (isIframeReady(this)) {
