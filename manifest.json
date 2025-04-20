@@ -32,7 +32,12 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["styles/overlay.css"],
+      "resources": [
+        "styles/overlay.css",
+        "icons/icon-16.png",
+        "icons/icon-48.png",
+        "icons/icon-128.png"
+      ],
       "matches": ["*://*/*"]
     }
   ]

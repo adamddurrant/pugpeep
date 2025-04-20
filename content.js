@@ -42,7 +42,6 @@ const content = document.createElement('div');
 content.id = 'pugpeep-content';
 content.style.cssText = `
   display: flex;
-  gap: 20px;
   flex-wrap: wrap;
 `;
 
@@ -78,7 +77,7 @@ function getVersionData() {
     result.reader = readerMetaTag.getAttribute('content');
   }
 
-  // Check for Timeline, Search, and Widgets in iframe
+  // Check for Timeline, and Widgets in iframe
   const iframe = document.querySelector('.content');
   if (iframe && isIframeReady(iframe)) {
     try {
@@ -89,12 +88,6 @@ function getVersionData() {
       const timelineMetaTag = innerDoc.querySelector('meta[name="PugpigBoltTimelineVersion"]');
       if (timelineMetaTag) {
         result.timeline = timelineMetaTag.getAttribute('content');
-      }
-
-      // Check for Search
-      const searchMetaTag = innerDoc.querySelector('meta[name="PugpigBoltSearchVersion"]');
-      if (searchMetaTag) {
-        result.search = searchMetaTag.getAttribute('content');
       }
 
       // Check for Widgets
@@ -178,41 +171,75 @@ function updateOverlayContent() {
     return;
   }
   
-  const overlayData = `
-    <div class="overlay-item">
-      <span class="label">Timeline:</span>
-      <span class="status ${data.timeline ? 'found' : ''}">${data.timeline || 'Not found'}</span>
-    </div>
-    <div class="overlay-item">
-      <span class="label">Reader:</span>
-      <span class="status ${data.reader ? 'found' : ''}">${data.reader || 'Not found'}</span>
-    </div>
-    <div class="overlay-item">
-      <span class="label">Widgets:</span>
-      <span class="status ${data.widgets ? 'found' : ''}">${data.widgets || 'Not found'}</span>
-    </div>
-    <div class="overlay-item">
-      <span class="label">Timeline CSS:</span>
-      <span class="status ${data.timelineCss === 'Found' ? 'found' : 'not-found'}">
-        ${data.timelineCss === 'Found' ? `<a href="${data.timelineCssUrl}" target="_blank">Found</a>` : 'Not found'}
-      </span>
-    </div>
-    <div class="overlay-item">
-      <span class="label">Timeline Grid:</span>
-      <span class="status ${data.timelineGrid === 'Active' ? 'found' : 'not-found'}">${data.timelineGrid || 'Inactive'}</span>
-    </div>
-    <div class="overlay-item">
-      <span class="label">Timeline Style:</span>
-      <span class="status ${data.timelineStyleVersion !== 'Not found' ? 'found' : 'not-found'}">${data.timelineStyleVersion}</span>
-    </div>
-    <div class="overlay-item">
-      <span class="label">Search:</span>
-      <span class="status ${data.search ? 'found' : ''}">${data.search || 'Not found'}</span>
-    </div>
-  `;
+  try {
+    const iconUrl = chrome.runtime.getURL('icons/icon-128.png');
+    
+    const overlayData = `
+      <img class="pugpeep-logo" src="${iconUrl}" style="height: 24px;" onerror="console.error('Failed to load icon')">
+      <div class="overlay-item">
+        <span class="label">Timeline:</span>
+        <span class="status ${data.timeline ? 'found' : ''}">${data.timeline || 'Not found'}</span>
+      </div>
+      <div class="overlay-item">
+        <span class="label">Reader:</span>
+        <span class="status ${data.reader ? 'found' : ''}">${data.reader || 'Not found'}</span>
+      </div>
+      <div class="overlay-item">
+        <span class="label">Widgets:</span>
+        <span class="status ${data.widgets ? 'found' : ''}">${data.widgets || 'Not found'}</span>
+      </div>
+      <div class="overlay-item">
+        <span class="label">Timeline CSS:</span>
+        <span class="status ${data.timelineCss === 'Found' ? 'found' : 'not-found'}">
+          ${data.timelineCss === 'Found' ? `<a href="${data.timelineCssUrl}" target="_blank">Found</a>` : 'Not found'}
+        </span>
+      </div>
+      <div class="overlay-item">
+        <span class="label">Timeline Grid:</span>
+        <span class="status ${data.timelineGrid === 'Active' ? 'found' : 'not-found'}">${data.timelineGrid || 'Inactive'}</span>
+      </div>
+      <div class="overlay-item">
+        <span class="label">Timeline Style:</span>
+        <span class="status ${data.timelineStyleVersion !== 'Not found' ? 'found' : 'not-found'}">${data.timelineStyleVersion}</span>
+      </div>
+    `;
 
-  content.innerHTML = overlayData;
-  overlay.style.transform = 'translateY(0)';
+    content.innerHTML = overlayData;
+    overlay.style.transform = 'translateY(0)';
+  } catch (error) {
+    console.error('Error loading icon:', error);
+    // Fallback to version without icon
+    const overlayData = `
+      <div class="overlay-item">
+        <span class="label">Timeline:</span>
+        <span class="status ${data.timeline ? 'found' : ''}">${data.timeline || 'Not found'}</span>
+      </div>
+      <div class="overlay-item">
+        <span class="label">Reader:</span>
+        <span class="status ${data.reader ? 'found' : ''}">${data.reader || 'Not found'}</span>
+      </div>
+      <div class="overlay-item">
+        <span class="label">Widgets:</span>
+        <span class="status ${data.widgets ? 'found' : ''}">${data.widgets || 'Not found'}</span>
+      </div>
+      <div class="overlay-item">
+        <span class="label">Timeline CSS:</span>
+        <span class="status ${data.timelineCss === 'Found' ? 'found' : 'not-found'}">
+          ${data.timelineCss === 'Found' ? `<a href="${data.timelineCssUrl}" target="_blank">Found</a>` : 'Not found'}
+        </span>
+      </div>
+      <div class="overlay-item">
+        <span class="label">Timeline Grid:</span>
+        <span class="status ${data.timelineGrid === 'Active' ? 'found' : 'not-found'}">${data.timelineGrid || 'Inactive'}</span>
+      </div>
+      <div class="overlay-item">
+        <span class="label">Timeline Style:</span>
+        <span class="status ${data.timelineStyleVersion !== 'Not found' ? 'found' : 'not-found'}">${data.timelineStyleVersion}</span>
+      </div>
+    `;
+    content.innerHTML = overlayData;
+    overlay.style.transform = 'translateY(0)';
+  }
 }
 
 // Listen for messages from the extension icon click
