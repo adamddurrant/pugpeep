@@ -2,7 +2,6 @@
   "manifest_version": 3,
   "name": "Pugpeep",
   "version": "1.0",
-  "description": "Pugpig version checker",
   "icons": {
     "16": "/icons/icon-16.png",
     "48": "/icons/icon-48.png",
@@ -16,26 +15,25 @@
     }
   },
   "permissions": [
-    "activeTab",
-    "scripting",
-    "webRequest"
+    "scripting", 
+    "tabs"
   ],
   "host_permissions": [
-    "<all_urls>"
+    "*://*/*"
   ],
   "background": {
     "service_worker": "background.js"
   },
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
+      "matches": ["*://*/*"],
       "js": ["content.js"]
     }
   ],
   "web_accessible_resources": [
     {
-      "resources": ["styles/*"],
-      "matches": ["<all_urls>"]
+      "resources": ["styles/overlay.css"],
+      "matches": ["*://*/*"]
     }
   ]
 }
