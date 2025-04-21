@@ -178,7 +178,7 @@ async function getVersionData() {
       console.error('Error accessing iframe content:', error);
     }
   } else {
-    console.error('Iframe not ready yet');
+    return;
   }
 
   // Add atom contents status
@@ -191,6 +191,12 @@ async function getVersionData() {
 // Function to update overlay content
 async function updateOverlayContent() {
   const data = await getVersionData();
+  
+  // Return early if no data is available
+  if (!data) {
+    overlay.style.transform = 'translateY(-100%)';
+    return;
+  }
 
   // Only show if Bolt Reader version is found
   if (!data.reader) {
