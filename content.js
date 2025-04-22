@@ -190,8 +190,15 @@ async function getVersionData() {
 
 // Function to update overlay content
 async function updateOverlayContent() {
+
+  // Respect user preference
+  if (localStorage.getItem('pugpeepOverlayClosed') === 'true') {
+    overlay.style.transform = 'translateY(-100%)';
+    return;
+  }
+
   const data = await getVersionData();
-  
+
   // Return early if no data is available
   if (!data) {
     overlay.style.transform = 'translateY(-100%)';
@@ -252,6 +259,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (overlay.style.transform === 'translateY(0)') {
       overlay.style.transform = 'translateY(-100%)';
     } else {
+      localStorage.removeItem('pugpeepOverlayClosed');
       updateOverlayContent();
     }
     sendResponse({ success: true });
@@ -262,6 +270,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 // Close button handler
 closeButton.addEventListener('click', () => {
   overlay.style.transform = 'translateY(-100%)';
+  localStorage.setItem('pugpeepOverlayClosed', 'true');
 });
 
 // Function to setup iframe listener
@@ -310,7 +319,10 @@ observer.observe(document.body, {
 // Initial setup
 setupNetworkMonitor();
 setupIframeListener();
-// Initial check with a small delay to ensure iframe is loaded
-setTimeout(() => {
-  updateOverlayContent();
-}, 500);
+
+// Only show overlay on load if it wasn't manually closed
+if (localStorage.getItem('pugpeepOverlayClosed') !== 'true') {
+  setTimeout(() => {
+    updateOverlayContent();
+  }, 500);
+}
